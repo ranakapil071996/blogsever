@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const Blog = require("../models/Blog");
+const passport = require("passport");
 
-router.get("/", (req, res) => {
+router.get("/",(req, res) => {
   let blogFetch = Blog.find({ isActive: true });
   if (req.query.all) {
     blogFetch = Blog.find();
@@ -13,7 +14,7 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(500).json(err));
 });
 
-router.post("/", (req, res) => {
+router.post("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
   const isError = blogValidation(req.body);
   if (isError.error) {
     res.status(400).json({ ...isError });
@@ -29,7 +30,7 @@ router.post("/", (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
   Blog.findByIdAndUpdate(req.params.id, req.body, { new: true}, (err, blog) => {
     if (err) {
       res.status(400).json({...err, message: "Id not found"});
@@ -39,7 +40,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
     Blog.findByIdAndDelete(req.params.id, (err, result) => {
       if (err) res.status(500).json({...err, message: "Id not found"});
       res.status(200).json(result);

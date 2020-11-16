@@ -1,5 +1,6 @@
 const Category = require("../models/Category");
 const router = require("express").Router();
+const passport = require("passport")
 
 //fetch category
 router.get("/category", (req, res) => {
@@ -15,7 +16,7 @@ router.get("/category", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
-router.post("/category", (req, res) => {
+router.post("/category",  passport.authenticate('jwt', {session: false}),(req, res) => {
   if(!req.body.name){
     res.status(400).json({error: true, message: "Category name is required"})
   }else{
@@ -33,7 +34,7 @@ router.post("/category", (req, res) => {
   }
 });
 
-router.put("/category/:id", (req, res) => {
+router.put("/category/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
   let tempReq = { ...req.body}
   if(tempReq.name){
     tempReq.name = tempReq.name.toUpperCase()
@@ -47,7 +48,7 @@ router.put("/category/:id", (req, res) => {
   });
 });
 
-router.delete("/category/:id", (req, res) => {
+router.delete("/category/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
     Category.findByIdAndDelete(req.params.id, (err, result) => {
       if (err) res.status(500).json({ ...err, message: "Id not found"});
       res.status(200).json(result);
