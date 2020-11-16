@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const passport = require("passport")
+const passport = require("passport");
 
 router.get("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
   let userFetch = User.find({ isActive: true });
