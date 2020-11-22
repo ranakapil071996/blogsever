@@ -2,17 +2,40 @@ const router = require("express").Router();
 const Blog = require("../models/Blog");
 const passport = require("passport");
 
-router.get("/",(req, res) => {
-  let blogFetch = Blog.find({ isActive: true });
+router.get("/", async (req, res) => {
+  const page = req.query.page ? parseInt(req.query.page) : 0;
+  const size = req.query.size ? parseInt(req.query.size): 20;
+  let blogFetchParams = { isActive: true }
   if (req.query.all) {
-    blogFetch = Blog.find();
+    delete blogFetchParams.isActive
   }
-  blogFetch
-    .then((blogs) => {
-      res.status(200).json(blogs);
-    })
-    .catch((err) => res.status(500).json(err));
+  if(req.query.category){
+    blogFetchParams.category = { $in: req.query.category }
+  }
+
+  try{
+    const blogs = await Blog.find(blogFetchParams).skip(page * size).limit(size).sort({createdAt: -1});
+    const count = await Blog.find(blogFetchParams).countDocuments()
+    res.status(200).json({blogs, page: { number: page, size, count}});
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
 });
+
+router.get("/:id", async (req, res)=> {
+  try{
+    const blogData = await Blog.findOne({ _id: req.params.id, isActive: true});
+    if(blogData){
+      res.status(200).json(blogData);
+    }else{
+      res.status(400).json({error: true, message: "Blog not found"})
+    }
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
+})
 
 router.post("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
   const isError = blogValidation(req.body);
