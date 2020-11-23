@@ -8,7 +8,12 @@ const blogSchema = new mongoose.Schema({
     keywords: [String],
     description: { type: String, required: true, trim: true},
     popularity: { type: Number, default: 0},
-    thumbnails: [{url: String, caption: String}]
+    thumbnails: [{url: String, caption: String}],
+    author: {
+        userId: String,
+        name: { type: String, required: true, trim: true },
+        profilePic: {type: String, trim: true}
+    }
 }, {
     timestamps: true
 });

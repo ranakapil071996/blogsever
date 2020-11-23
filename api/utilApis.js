@@ -20,7 +20,7 @@ router.post("/category",  passport.authenticate('jwt', {session: false}),(req, r
   if(!req.body.name){
     res.status(400).json({error: true, message: "Category name is required"})
   }else{
-    Category.find({name: req.body.name.toUpperCase()}).then(item => {
+    Category.find({name: req.body.name.replace(/ /g,"_").toUpperCase()}).then(item => {
       if(item.length){
         res.status(400).json({ error: true, message: "Category aleady exist"})
       }else{

@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const passport = require("passport");
+const { route } = require("./utilApis");
 
+//get all user
 router.get("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
   let userFetch = User.find({ isActive: true });
   if (req.query.all) {
@@ -18,6 +20,22 @@ router.get("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
     .catch((err) => res.status(500).json(err));
 });
 
+router.get("/:id", async (req, res)=> {
+  try{
+    const user = await User.findOne({ _id: req.params.id, isActive: true});
+    if(user){
+      res.status(200).json(user)
+    }else{
+      res.status(404).json({error: true, message: "User not found"})
+    }
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json(err)
+  }
+})
+
+//login 
 router.post("/login", async (req, res)=>{
     try{
         const user = await User.findByCredentials(req.body.email, req.body.password);
@@ -31,6 +49,7 @@ router.post("/login", async (req, res)=>{
     }
 })
 
+//adding user
 router.post("/",  passport.authenticate('jwt', {session: false}),async (req, res) => {
   const user = await User.find({ email: req.body.email });
   if (user.length) {
