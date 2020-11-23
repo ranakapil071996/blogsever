@@ -19,7 +19,7 @@ const UserSchema = mongoose.Schema(
         }
       }
     },
-    socials: [{type: String, link: String}],
+    socials: [],
     profilePic: { type: String, trim: true},
     role: {type: [String], enum: ['ADMIN', 'USER'], default: ['USER'] },
     isActive: { type: Boolean, default: true }

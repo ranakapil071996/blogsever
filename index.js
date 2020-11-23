@@ -6,7 +6,7 @@ const { mongoUri } = require('./config');
 const passport = require('passport');
 
 const app = express();
-const port = process.env.PORT || 5010;
+const port = process.env.PORT || 5011;
 app.use(body_parser.json({ limit: "50mb"}));
 require("./config/passport")(passport)
 app.use(passport.initialize())
