@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
-const blogSchema = new mongoose.Schema({
+const homeSchema = new mongoose.Schema({
     title: { type: String, trim: true, required: true},
-    content: { type: String, trim: true, required: true}, 
-    isActive: { type: Boolean, default: false},
-    category: [String],
-    keywords: [String],
     description: { type: String, required: true, trim: true},
+    isActive: { type: Boolean, default: false},
     popularity: { type: Number, default: 0},
     thumbnails: [{url: {type: String}, caption: { type: String}, type: { type: String, default: "IMAGE"}}],
+    type: { type: [String], required: true},
     author: {
         userId: String,
         name: { type: String, required: true, trim: true },
@@ -18,4 +16,4 @@ const blogSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('blogs', blogSchema)
+module.exports = mongoose.model('homepage', homeSchema)

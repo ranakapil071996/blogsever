@@ -20,5 +20,6 @@ app.use('/blogs', require('./api/Blog'));
 app.use('/image', require('./api/image'));
 app.use('/utils', require('./api/utilApis'));
 app.use('/user', require('./api/Users'));
+app.use('/home', require('./api/Home'));
 
 app.listen(port, () => console.log("Server is up on "+ port))
