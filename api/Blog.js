@@ -16,7 +16,11 @@ router.get("/", async (req, res) => {
   if(req.query.title){
     blogFetchParams.title = { $regex : req.query.title, $options: "i" }
   }
-  
+
+  if(req.query.userId){
+    blogFetchParams["author.userId"] = { $in: req.query.userId};
+  }
+
   try{
     const blogs = await Blog.find(blogFetchParams).skip(page * size).limit(size).sort({createdAt: -1});
     const count = await Blog.find(blogFetchParams).countDocuments()
