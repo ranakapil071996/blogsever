@@ -7,7 +7,7 @@ const homeSchema = new mongoose.Schema({
     popularity: { type: Number, default: 0},
     thumbnails: [{url: {type: String}, caption: { type: String}, type: { type: String, default: "IMAGE"}}],
     type: { type: [String], required: true},
-    slug: { type: [String], required: true, unique: true},
+    slug: { type: String, required: true, unique: true},
     author: {
         userId: String,
         name: { type: String, required: true, trim: true },
