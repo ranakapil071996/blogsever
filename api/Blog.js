@@ -20,6 +20,9 @@ router.get("/", async (req, res) => {
   if(req.query.userId){
     blogFetchParams["author.userId"] = { $in: req.query.userId};
   }
+  if(req.query.slug){
+    blogFetchParams.slug = slug
+  }
 
   try{
     const blogs = await Blog.find(blogFetchParams).skip(page * size).limit(size).sort({createdAt: -1});
