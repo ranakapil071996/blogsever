@@ -55,7 +55,7 @@ router.post("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
   } else {
     const body = { ...req.body};
     if(body.title){
-      let slug = body.title.replace(/[^\w\s]/gi, '').replace(/,/g, '-').replace(/ /g, '-').toLowerCase();
+      let slug = body.title.replace(/[^\w\s]/gi, '').replace(/ /g, '-').toLowerCase();
       body.slug =slug
     }
     const newBlog = new Blog({ ...body });
@@ -72,7 +72,7 @@ router.post("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
 router.put("/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
   const body = { ...req.body};
   if(body.title){
-    let slug = body.title.replace(/[^\w\s]/gi, '').replace(/,/g, '-').replace(/ /g, '-').toLowerCase();
+    let slug = body.title.replace(/[^\w\s]/gi, '').replace(/ /g, '-').toLowerCase();
     body.slug =slug
   }
   Blog.findByIdAndUpdate(req.params.id, body, { new: true}, (err, blog) => {
