@@ -50,7 +50,12 @@ router.post("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
   if (isError.error) {
     res.status(400).json({ ...isError });
   } else {
-    const newBlog = new Blog({ ...req.body });
+    const body = { ...req.body};
+    if(body.title){
+      let slug = body.title.replace(/[^\w\s]/gi, '').replace(/ /g, '-').toLowerCase();
+      body.slug =slug
+    }
+    const newBlog = new Blog({ ...body });
     newBlog.save((err, blog) => {
       if (err) {
         res.status(500).json(err);
@@ -62,7 +67,12 @@ router.post("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
 });
 
 router.put("/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
-  Blog.findByIdAndUpdate(req.params.id, req.body, { new: true}, (err, blog) => {
+  const body = { ...req.body};
+  if(body.title){
+    let slug = body.title.replace(/[^\w\s]/gi, '').replace(/ /g, '-').toLowerCase();
+    body.slug =slug
+  }
+  Blog.findByIdAndUpdate(req.params.id, body, { new: true}, (err, blog) => {
     if (err) {
       res.status(400).json({...err, message: "Id not found"});
     } else {
