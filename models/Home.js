@@ -8,6 +8,7 @@ const homeSchema = new mongoose.Schema({
     thumbnails: [{url: {type: String}, caption: { type: String}, type: { type: String, default: "IMAGE"}}],
     type: { type: [String], required: true},
     slug: { type: String, required: true, unique: true},
+    category: [String],
     author: {
         userId: String,
         name: { type: String, required: true, trim: true },
