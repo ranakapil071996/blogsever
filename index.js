@@ -22,9 +22,9 @@ app.use('/api/image', require('./api/image'));
 app.use('/api/utils', require('./api/utilApis'));
 app.use('/api/user', require('./api/Users'));
 app.use('/api/home', require('./api/Home'));
-app.use(express.static(path.resolve(__dirname, "../client", "deploy")))
-app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "deploy", "index.html"));
-})
+// app.use(express.static(path.resolve(__dirname, "../client", "deploy")))
+// app.get("/*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../client", "deploy", "index.html"));
+// })
 
 app.listen(port, () => console.log("Server is up on "+ port))

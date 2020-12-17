@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
     delete homeFetchParams.isActive;
   }
   try {
-    const homeData = await Home.find(homeFetchParams);
+    const homeData = await Home.find(homeFetchParams).sort({createdAt: -1});
     res.status(200).json(homeData);
   } catch (err) {
     res.status(500).json(err);
