@@ -98,4 +98,11 @@ router.get("/email", async (req, res) => {
   }
 });
 
+router.delete("/email/:id", async (req, res) => {
+  Email.findByIdAndDelete(req.params.id, (err, result) => {
+    if (err) res.status(500).json({ ...err, message: "Id not found" });
+    res.status(200).json(result);
+  });
+});
+
 module.exports = router;
