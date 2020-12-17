@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const passport = require("passport");
-const { route } = require("./utilApis");
 
 //get all user
 router.get("/",  passport.authenticate('jwt', {session: false}),(req, res) => {
@@ -24,6 +23,7 @@ router.get("/:id", async (req, res)=> {
   try{
     const user = await User.findOne({ _id: req.params.id, isActive: true});
     if(user){
+      user.password = null
       res.status(200).json(user)
     }else{
       res.status(404).json({error: true, message: "User not found"})
@@ -77,6 +77,7 @@ router.put("/:id",  passport.authenticate('jwt', {session: false}),async (req, r
     if (err) {
       res.status(400).json({ message: "Id not found", ...err });
     }
+    user.password = null
     res.status(200).json(user);
   });
 });
@@ -84,6 +85,7 @@ router.put("/:id",  passport.authenticate('jwt', {session: false}),async (req, r
 router.delete("/:id",  passport.authenticate('jwt', {session: false}),(req, res) => {
   User.findByIdAndDelete(req.params.id, (err, result) => {
     if (err) res.status(500).json({ ...err, message: "Id not found" });
+    result.password = null
     res.status(200).json(result);
   });
 });
