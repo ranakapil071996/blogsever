@@ -77,8 +77,8 @@ router.put("/:id",  passport.authenticate('jwt', {session: false}),async (req, r
     if (err) {
       res.status(400).json({ message: "Id not found", ...err });
     }
-    user.password = null
-    res.status(200).json(user);
+    result.password = null
+    res.status(200).json(result);
   });
 });
 
